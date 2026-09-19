@@ -2,8 +2,8 @@
 
 public static class Base62Converter
 {
-    // Base62 Character Set
-    private const string Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    // Standard Base62 Character Set: [0-9][a-z][A-Z]
+    private const string Alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static readonly char[] AlphabetChars = Alphabet.ToCharArray();
 
     // Encode
@@ -32,10 +32,10 @@ public static class Base62Converter
     // Decode
     public static long Decode(ReadOnlySpan<char> code)
     {
-        // Empty Check
-        if (code.IsEmpty)
+        // Empty or Whitespace Check
+        if (code.IsEmpty || code.IsWhiteSpace())
         {
-            throw new ArgumentException("Code cannot be empty.", nameof(code));
+            throw new ArgumentException("Code cannot be empty or whitespace.", nameof(code));
         }
 
         long result = 0;
@@ -45,8 +45,8 @@ public static class Base62Converter
             int digitValue = c switch
             {
                 >= '0' and <= '9' => c - '0',
-                >= 'A' and <= 'Z' => c - 'A' + 10,
-                >= 'a' and <= 'z' => c - 'a' + 36,
+                >= 'a' and <= 'z' => c - 'a' + 10,
+                >= 'A' and <= 'Z' => c - 'A' + 36,
                 _ => throw new FormatException($"Invalid character '{c}' in short code.")
             };
 

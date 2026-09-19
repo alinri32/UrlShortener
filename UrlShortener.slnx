@@ -5,4 +5,7 @@
     <Project Path="src/UrlShortener.Infrastructure/UrlShortener.Infrastructure.csproj" />
     <Project Path="src/UrlShortener.WebApi/UrlShortener.WebApi.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/UrlShortener.Tests/UrlShortener.Tests.csproj" />
+  </Folder>
 </Solution>
