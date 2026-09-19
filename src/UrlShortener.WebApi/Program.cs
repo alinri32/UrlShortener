@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Microservice URL Shortener with 2M req/day capacity."
     });
 
-    // JWT Bearer Configuration
+    // JWT Bearer Definition
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -40,43 +40,30 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter JWT Bearer token."
+        Description = "Enter your JWT Bearer token."
     });
 
-    // API Key Configuration
+    // API Key Definition
     options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
     {
         Name = "X-Api-Key",
         Type = SecuritySchemeType.ApiKey,
         In = ParameterLocation.Header,
-        Description = "Enter API Key in 'X-Api-Key' header."
+        Description = "Enter your API Key."
     });
 
-    // Global Security Requirement
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    // Add Security Requirement (Using OpenApiDocument delegate compatible with Microsoft.OpenApi v2)
+    options.AddSecurityRequirement(doc =>
     {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        },
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "ApiKey"
-                }
-            },
-            Array.Empty<string>()
-        }
+        var requirement = new OpenApiSecurityRequirement();
+
+        var bearerRef = new OpenApiSecuritySchemeReference("Bearer", doc);
+        var apiKeyRef = new OpenApiSecuritySchemeReference("ApiKey", doc);
+
+        requirement.Add(bearerRef, new List<string>());
+        requirement.Add(apiKeyRef, new List<string>());
+
+        return requirement;
     });
 });
 
