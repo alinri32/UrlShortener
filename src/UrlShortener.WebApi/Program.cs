@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.RateLimiting;
 using UrlShortener.Application;
 using UrlShortener.Application.DTOs;
@@ -32,16 +29,6 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Microservice URL Shortener"
     });
 
-    // JWT Bearer Definition
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter your JWT Bearer token."
-    });
 
     // API Key Definition
     options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
@@ -52,40 +39,18 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Enter your API Key."
     });
 
-    // Add Security Requirement (Using OpenApiDocument delegate compatible with Microsoft.OpenApi v2)
+    // Add Security Requirement
     options.AddSecurityRequirement(doc =>
     {
         var requirement = new OpenApiSecurityRequirement();
 
-        var bearerRef = new OpenApiSecuritySchemeReference("Bearer", doc);
         var apiKeyRef = new OpenApiSecuritySchemeReference("ApiKey", doc);
 
-        requirement.Add(bearerRef, new List<string>());
         requirement.Add(apiKeyRef, new List<string>());
 
         return requirement;
     });
 });
-
-// JWT Authentication Setup
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = signingKey,
-            ClockSkew = TimeSpan.FromSeconds(10)
-        };
-    });
 
 builder.Services.AddAuthorization();
 
