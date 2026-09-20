@@ -1,10 +1,10 @@
 ﻿namespace UrlShortener.WebApi.Authentication;
 
-using System.Security.Cryptography;
-using System.Text;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
+using System.Text;
 
 public sealed class ApiKeyEndpointFilter : IEndpointFilter
 {

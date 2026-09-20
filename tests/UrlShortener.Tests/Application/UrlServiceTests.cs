@@ -36,7 +36,7 @@ public class UrlServiceTests
             .Returns(new FluentValidation.Results.ValidationResult());
 
         // Act
-        var result = await _sut.ShortenUrlAsync(request, userId: 1, baseUrl: "https://sho.rt");
+        var result = await _sut.SetAsync(request, userId: 1, baseUrl: "https://sho.rt");
 
         // Assert
         result.Should().NotBeNull();
@@ -62,7 +62,7 @@ public class UrlServiceTests
             .Returns(targetUrl);
 
         // Act
-        string? result = await _sut.GetOriginalUrlAsync(shortCode);
+        string? result = await _sut.GetAsync(shortCode);
 
         // Assert
         result.Should().Be(targetUrl);

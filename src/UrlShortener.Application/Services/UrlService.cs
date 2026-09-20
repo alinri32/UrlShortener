@@ -29,7 +29,7 @@ public sealed class UrlService : IUrlService
     }
 
     // Command: Create Short URL
-    public async Task<ShortenUrlResponse> ShortenUrlAsync(ShortenUrlRequest request, long? userId, string baseUrl, CancellationToken cancellationToken = default)
+    public async Task<ShortenUrlResponse> SetAsync(ShortenUrlRequest request, long? userId, string baseUrl, CancellationToken cancellationToken = default)
     {
         // Input Validation
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
@@ -72,7 +72,7 @@ public sealed class UrlService : IUrlService
     }
 
     // Query: Resolve Short URL (Protected with Single-Flight)
-    public async Task<string?> GetOriginalUrlAsync(string shortCode, CancellationToken cancellationToken = default)
+    public async Task<string?> GetAsync(string shortCode, CancellationToken cancellationToken = default)
     {
         // Cache Lookup with Single-Flight Fallback to DB
         return await _cacheService.GetOrSetUrlAsync(

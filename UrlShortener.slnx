@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="sql/ShortenerDb.sql" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/UrlShortener.Application/UrlShortener.Application.csproj" />
     <Project Path="src/UrlShortener.Domain/UrlShortener.Domain.csproj" />
