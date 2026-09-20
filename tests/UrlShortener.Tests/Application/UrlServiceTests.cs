@@ -13,7 +13,7 @@ public class UrlServiceTests
 {
     private readonly IUrlRepository _urlRepository = Substitute.For<IUrlRepository>();
     private readonly ICacheService _cacheService = Substitute.For<ICacheService>();
-    private readonly IIdRangeAllocator _rangeAllocator = Substitute.For<IIdRangeAllocator>();
+    private readonly IIdRangeAllocatorRepository _rangeAllocator = Substitute.For<IIdRangeAllocatorRepository>();
     private readonly IValidator<ShortenUrlRequest> _validator = Substitute.For<IValidator<ShortenUrlRequest>>();
     private readonly UrlService _sut;
 

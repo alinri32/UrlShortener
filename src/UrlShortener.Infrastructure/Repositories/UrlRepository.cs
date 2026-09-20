@@ -1,4 +1,4 @@
-﻿namespace UrlShortener.Infrastructure.Persistence;
+﻿namespace UrlShortener.Infrastructure.Repositories;
 
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -17,10 +17,10 @@ public sealed class UrlRepository : IUrlRepository
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     }
 
-    // High-Performance Point Lookup Query
+    // Query: Lookup 
     public async Task<ShortenedUrl?> GetByShortCodeAsync(string shortCode, CancellationToken cancellationToken = default)
     {
-        const string sql = """
+        const string sql = @"
             SELECT 
                 Id, 
                 ShortCode, 
@@ -29,9 +29,11 @@ public sealed class UrlRepository : IUrlRepository
                 CreatedAt, 
                 ExpiresAt, 
                 IsActive
-            FROM dbo.ShortenedUrls WITH (NOLOCK)
-            WHERE ShortCode = @ShortCode;
-        """;
+            FROM 
+                dbo.ShortenedUrls WITH (NOLOCK)
+            WHERE
+                ShortCode = @ShortCode;
+        ";
 
         await using var connection = new SqlConnection(_connectionString);
 
@@ -45,15 +47,32 @@ public sealed class UrlRepository : IUrlRepository
         return await connection.QuerySingleOrDefaultAsync<ShortenedUrl>(command);
     }
 
-    // Command: Append-Only Create
+    // Command: Append-Only
     public async Task CreateAsync(ShortenedUrl shortenedUrl, CancellationToken cancellationToken = default)
     {
-        const string sql = """
-            INSERT INTO dbo.ShortenedUrls 
-                (Id, ShortCode, OriginalUrl, CreatedByUserId, CreatedAt, ExpiresAt, IsActive)
+        const string sql = @"
+            INSERT INTO 
+                dbo.ShortenedUrls 
+                (
+                    Id,
+                    ShortCode,
+                    OriginalUrl,
+                    CreatedByUserId,
+                    CreatedAt,
+                    ExpiresAt,
+                    IsActive
+                )
             VALUES 
-                (@Id, @ShortCode, @OriginalUrl, @CreatedByUserId, @CreatedAt, @ExpiresAt, @IsActive);
-        """;
+                (
+                    @Id,
+                    @ShortCode,
+                    @OriginalUrl,
+                    @CreatedByUserId,
+                    @CreatedAt,
+                    @ExpiresAt,
+                    @IsActive
+                );
+        ";
 
         await using var connection = new SqlConnection(_connectionString);
 

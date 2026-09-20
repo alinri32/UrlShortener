@@ -29,7 +29,7 @@ public sealed class ApiKeyEndpointFilter : IEndpointFilter
         // Header Check
         if (!httpContext.Request.Headers.TryGetValue(HeaderName, out var extractedApiKey) || string.IsNullOrWhiteSpace(extractedApiKey))
         {
-            return Results.Json(new { error = "Unauthorized: Missing API Key or Bearer Token." }, statusCode: StatusCodes.Status401Unauthorized);
+            return Results.Json(new { error = "Unauthorized: Missing API Key." }, statusCode: StatusCodes.Status401Unauthorized);
         }
 
         string rawKey = extractedApiKey.ToString();

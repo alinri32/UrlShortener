@@ -13,7 +13,7 @@ public class UniqueIdGeneratorConcurrencyTests
     public async Task NextIdAsync_UnderHighConcurrency_ShouldProduceUniqueSequentialIdsWithoutCollisions()
     {
         // Arrange
-        var rangeAllocator = Substitute.For<IIdRangeAllocator>();
+        var rangeAllocator = Substitute.For<IIdRangeAllocatorRepository>();
         long currentRangeBase = 1;
         const int batchSize = 10000;
 

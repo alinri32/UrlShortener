@@ -1,8 +1,8 @@
 ﻿namespace UrlShortener.Tests.Application;
 
 using FluentAssertions;
+using UrlShortener.Application.Common.Validators;
 using UrlShortener.Application.DTOs;
-using UrlShortener.Application.Validators;
 using Xunit;
 
 public class ShortenUrlRequestValidatorTests

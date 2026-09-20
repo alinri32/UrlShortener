@@ -1,10 +1,10 @@
-﻿namespace UrlShortener.Application.Services;
+﻿namespace UrlShortener.Application.Common.Generators;
 
 using UrlShortener.Application.Common.Interfaces;
 
 public sealed class UniqueIdGenerator
 {
-    private readonly IIdRangeAllocator _rangeAllocator;
+    private readonly IIdRangeAllocatorRepository _rangeAllocator;
     private readonly SemaphoreSlim _allocationLock = new(1, 1);
 
     // Atomic State Trackers
@@ -14,7 +14,7 @@ public sealed class UniqueIdGenerator
     // Fast Batch Size
     private const int BatchSize = 100000;
 
-    public UniqueIdGenerator(IIdRangeAllocator rangeAllocator)
+    public UniqueIdGenerator(IIdRangeAllocatorRepository rangeAllocator)
     {
         _rangeAllocator = rangeAllocator;
     }

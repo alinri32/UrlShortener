@@ -2,8 +2,9 @@
 
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using UrlShortener.Application.Common.Generators;
+using UrlShortener.Application.Common.Validators;
 using UrlShortener.Application.Services;
-using UrlShortener.Application.Validators;
 
 public static class DependencyInjection
 {

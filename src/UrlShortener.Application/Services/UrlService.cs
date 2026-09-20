@@ -1,6 +1,7 @@
 ﻿namespace UrlShortener.Application.Services;
 
 using FluentValidation;
+using UrlShortener.Application.Common.Generators;
 using UrlShortener.Application.Common.Interfaces;
 using UrlShortener.Application.DTOs;
 using UrlShortener.Domain.Common;

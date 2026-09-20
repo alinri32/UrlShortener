@@ -1,4 +1,4 @@
-﻿namespace UrlShortener.Application.Validators;
+﻿namespace UrlShortener.Application.Common.Validators;
 
 using FluentValidation;
 using UrlShortener.Application.DTOs;

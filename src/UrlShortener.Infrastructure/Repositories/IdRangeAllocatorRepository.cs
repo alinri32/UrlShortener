@@ -1,4 +1,4 @@
-﻿namespace UrlShortener.Infrastructure.Persistence;
+﻿namespace UrlShortener.Infrastructure.Repositories;
 
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using UrlShortener.Application.Common.Interfaces;
 
-public sealed class IdRangeAllocator : IIdRangeAllocator
+public sealed class IdRangeAllocatorRepository : IIdRangeAllocatorRepository
 {
     private readonly string _connectionString;
 
-    public IdRangeAllocator(IConfiguration configuration)
+    public IdRangeAllocatorRepository(IConfiguration configuration)
     {
         _connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UrlShortener.Application.Common.Interfaces;
 using UrlShortener.Infrastructure.Caching;
-using UrlShortener.Infrastructure.Persistence;
+using UrlShortener.Infrastructure.Repositories;
 
 public static class DependencyInjection
 {
@@ -21,7 +21,7 @@ public static class DependencyInjection
         services.AddSingleton<ICacheService, MemoryCacheService>();
 
         // Range Allocator
-        services.AddSingleton<IIdRangeAllocator, IdRangeAllocator>();
+        services.AddSingleton<IIdRangeAllocatorRepository, IdRangeAllocatorRepository>();
 
         // Repositories
         services.AddScoped<IUrlRepository, UrlRepository>();
