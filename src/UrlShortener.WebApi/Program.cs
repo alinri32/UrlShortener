@@ -126,7 +126,7 @@ app.MapPost("/api/v1/urls", async (
 .RequireRateLimiting("CreationPolicy")
 .AddEndpointFilter<ApiKeyEndpointFilter>();
 
-// Fast-Path Query Route: Redirect Short URL
+// Query Route: Redirect
 app.MapGet("/{shortCode:regex(^[a-zA-Z0-9]{{1,11}}$)}", async (
     string shortCode,
     IUrlService urlService,
@@ -142,10 +142,5 @@ app.MapGet("/{shortCode:regex(^[a-zA-Z0-9]{{1,11}}$)}", async (
 .WithSummary("Redirects to the original URL via HTTP 302")
 .Produces(StatusCodes.Status302Found)
 .Produces(StatusCodes.Status404NotFound);
-
-// Health Probe
-app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }))
-.WithName("HealthCheck")
-.Produces(StatusCodes.Status200OK);
 
 app.Run();

@@ -105,7 +105,7 @@ GO
 
 -- Seed Starting Block (Minimum 10,000,000 to produce clean multi-char Base62 tokens)
 INSERT INTO dbo.IdAllocationState (Id, CurrentMaxId)
-VALUES (1, 10000000);
+VALUES (1, 100000);
 GO
 
 -- High-Performance Atomic Range Allocation Routine
