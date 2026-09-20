@@ -27,9 +27,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "High-Performance URL Shortener API",
-        Version = "v1",
-        Description = "Microservice URL Shortener with 2M req/day capacity."
+        Title = "URL Shortener API",
+        Version = "V1",
+        Description = "Microservice URL Shortener"
     });
 
     // JWT Bearer Definition
