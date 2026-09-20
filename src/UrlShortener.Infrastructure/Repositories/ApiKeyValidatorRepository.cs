@@ -11,16 +11,18 @@ namespace UrlShortener.Infrastructure.Repositories;
 
 public sealed class ApiKeyValidator : IApiKeyValidator
 {
+    // Services 
     private readonly string _connectionString;
     private readonly IMemoryCache _cache;
     private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
-
+    //Ctor
     public ApiKeyValidator(IConfiguration configuration, IMemoryCache cache)
     {
         _connectionString = configuration.GetConnectionString("DefaultConnection")!;
         _cache = cache;
     }
 
+    // Public methods
     public async Task<long?> ValidateApiKeyAsync(string rawApiKey, CancellationToken cancellationToken = default)
     {
         string keyHash = ComputeSha256Hex(rawApiKey);
@@ -49,12 +51,16 @@ public sealed class ApiKeyValidator : IApiKeyValidator
 
         if (userId.HasValue)
         {
-            _cache.Set(cacheKey, userId.Value, CacheDuration);
+            var cacheOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = CacheDuration,
+                Size = 1
+            };
+            _cache.Set(cacheKey, userId.Value, cacheOptions);
         }
 
         return userId;
     }
-
     private static string ComputeSha256Hex(string input)
     {
         Span<byte> hashBytes = stackalloc byte[32];

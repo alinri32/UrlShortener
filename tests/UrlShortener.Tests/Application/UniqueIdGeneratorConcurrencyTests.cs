@@ -1,10 +1,10 @@
 ﻿namespace UrlShortener.Tests.Application;
 
-using System.Collections.Concurrent;
 using FluentAssertions;
 using NSubstitute;
+using System.Collections.Concurrent;
+using UrlShortener.Application.Common.Generators;
 using UrlShortener.Application.Common.Interfaces;
-using UrlShortener.Application.Services;
 using Xunit;
 
 public class UniqueIdGeneratorConcurrencyTests

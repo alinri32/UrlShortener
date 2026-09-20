@@ -3,6 +3,7 @@
 using FluentAssertions;
 using FluentValidation;
 using NSubstitute;
+using UrlShortener.Application.Common.Generators;
 using UrlShortener.Application.Common.Interfaces;
 using UrlShortener.Application.DTOs;
 using UrlShortener.Application.Services;
