@@ -92,7 +92,7 @@ app.UseAuthorization();
 
 // Command Route: Create Short URL
 app.MapPost("/api/v1/urls", async (
-    ShortenUrlRequest request,
+    ShortenUrlRequestDto request,
     IUrlService urlService,
     HttpContext httpContext,
     CancellationToken ct) =>
@@ -119,7 +119,7 @@ app.MapPost("/api/v1/urls", async (
 })
 .WithName("CreateShortUrl")
 .WithSummary("Creates a new shortened URL")
-.Produces<ShortenUrlResponse>(StatusCodes.Status201Created)
+.Produces<ShortenUrlResponseDto>(StatusCodes.Status201Created)
 .Produces(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status401Unauthorized)
 .Produces(StatusCodes.Status429TooManyRequests)

@@ -5,7 +5,7 @@ using UrlShortener.Application.DTOs;
 public interface IUrlService
 {
     // Command
-    Task<ShortenUrlResponse> SetAsync(ShortenUrlRequest request, long? userId, string baseUrl, CancellationToken cancellationToken = default);
+    Task<ShortenUrlResponseDto> SetAsync(ShortenUrlRequestDto request, long? userId, string baseUrl, CancellationToken cancellationToken = default);
 
     // Query
     Task<string?> GetAsync(string shortCode, CancellationToken cancellationToken = default);

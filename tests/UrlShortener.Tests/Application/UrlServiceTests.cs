@@ -14,7 +14,7 @@ public class UrlServiceTests
     private readonly IUrlRepository _urlRepository = Substitute.For<IUrlRepository>();
     private readonly ICacheService _cacheService = Substitute.For<ICacheService>();
     private readonly IIdRangeAllocatorRepository _rangeAllocator = Substitute.For<IIdRangeAllocatorRepository>();
-    private readonly IValidator<ShortenUrlRequest> _validator = Substitute.For<IValidator<ShortenUrlRequest>>();
+    private readonly IValidator<ShortenUrlRequestDto> _validator = Substitute.For<IValidator<ShortenUrlRequestDto>>();
     private readonly UrlService _sut;
 
     public UrlServiceTests()
@@ -31,7 +31,7 @@ public class UrlServiceTests
     public async Task ShortenUrlAsync_WhenValid_ShouldPersistAndSetCache()
     {
         // Arrange
-        var request = new ShortenUrlRequest("https://example.com");
+        var request = new ShortenUrlRequestDto("https://example.com");
         _validator.ValidateAsync(request, Arg.Any<CancellationToken>())
             .Returns(new FluentValidation.Results.ValidationResult());
 

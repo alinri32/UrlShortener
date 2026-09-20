@@ -12,7 +12,7 @@ public sealed class UrlService : IUrlService
     private readonly IUrlRepository _urlRepository;
     private readonly ICacheService _cacheService;
     private readonly UniqueIdGenerator _idGenerator;
-    private readonly IValidator<ShortenUrlRequest> _validator;
+    private readonly IValidator<ShortenUrlRequestDto> _validator;
 
     // Cache TTL Settings
     private static readonly TimeSpan DefaultTtl = TimeSpan.FromHours(24);
@@ -21,7 +21,7 @@ public sealed class UrlService : IUrlService
         IUrlRepository urlRepository,
         ICacheService cacheService,
         UniqueIdGenerator idGenerator,
-        IValidator<ShortenUrlRequest> validator)
+        IValidator<ShortenUrlRequestDto> validator)
     {
         _urlRepository = urlRepository;
         _cacheService = cacheService;
@@ -30,7 +30,7 @@ public sealed class UrlService : IUrlService
     }
 
     // Command: Create Short URL
-    public async Task<ShortenUrlResponse> SetAsync(ShortenUrlRequest request, long? userId, string baseUrl, CancellationToken cancellationToken = default)
+    public async Task<ShortenUrlResponseDto> SetAsync(ShortenUrlRequestDto request, long? userId, string baseUrl, CancellationToken cancellationToken = default)
     {
         // Input Validation
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
@@ -69,7 +69,7 @@ public sealed class UrlService : IUrlService
 
         // Result Response
         string fullShortUrl = $"{baseUrl.TrimEnd('/')}/{shortCode}";
-        return new ShortenUrlResponse(shortCode, fullShortUrl, request.ExpiresAt);
+        return new ShortenUrlResponseDto(shortCode, fullShortUrl, request.ExpiresAt);
     }
 
     // Query: Resolve Short URL (Protected with Single-Flight)

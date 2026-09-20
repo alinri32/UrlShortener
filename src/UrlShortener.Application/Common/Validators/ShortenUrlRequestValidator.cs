@@ -3,7 +3,7 @@
 using FluentValidation;
 using UrlShortener.Application.DTOs;
 
-public sealed class ShortenUrlRequestValidator : AbstractValidator<ShortenUrlRequest>
+public sealed class ShortenUrlRequestValidator : AbstractValidator<ShortenUrlRequestDto>
 {
     public ShortenUrlRequestValidator()
     {

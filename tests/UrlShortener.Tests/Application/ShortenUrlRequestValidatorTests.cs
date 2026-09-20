@@ -15,7 +15,7 @@ public class ShortenUrlRequestValidatorTests
     public async Task Validate_ValidUrl_ShouldPassValidation(string validUrl)
     {
         // Arrange
-        var request = new ShortenUrlRequest(validUrl);
+        var request = new ShortenUrlRequestDto(validUrl);
 
         // Act
         var result = await _validator.ValidateAsync(request);
@@ -32,27 +32,27 @@ public class ShortenUrlRequestValidatorTests
     public async Task Validate_InvalidUrl_ShouldFailValidation(string invalidUrl)
     {
         // Arrange
-        var request = new ShortenUrlRequest(invalidUrl);
+        var request = new ShortenUrlRequestDto(invalidUrl);
 
         // Act
         var result = await _validator.ValidateAsync(request);
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(e => e.PropertyName == nameof(ShortenUrlRequest.OriginalUrl));
+        result.Errors.Should().Contain(e => e.PropertyName == nameof(ShortenUrlRequestDto.OriginalUrl));
     }
 
     [Fact]
     public async Task Validate_PastExpirationDate_ShouldFailValidation()
     {
         // Arrange
-        var request = new ShortenUrlRequest("https://example.com", DateTime.UtcNow.AddMinutes(-10));
+        var request = new ShortenUrlRequestDto("https://example.com", DateTime.UtcNow.AddMinutes(-10));
 
         // Act
         var result = await _validator.ValidateAsync(request);
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(e => e.PropertyName == nameof(ShortenUrlRequest.ExpiresAt));
+        result.Errors.Should().Contain(e => e.PropertyName == nameof(ShortenUrlRequestDto.ExpiresAt));
     }
 }

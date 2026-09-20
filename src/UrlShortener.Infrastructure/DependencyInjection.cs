@@ -26,6 +26,9 @@ public static class DependencyInjection
         // Repositories
         services.AddScoped<IUrlRepository, UrlRepository>();
 
+        // ApiKey Validator
+        services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();
+
         return services;
     }
 }
