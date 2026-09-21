@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Diagnostics;
 
 public sealed class GlobalExceptionHandler : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(
-        HttpContext httpContext,
-        Exception exception,
-        CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         // FluentValidation Handling
         if (exception is ValidationException validationException)

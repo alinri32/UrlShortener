@@ -4,23 +4,20 @@ using UrlShortener.Application.Common.Interfaces;
 
 public sealed class ApiKeyEndpointFilter : IEndpointFilter
 {
+    // Services
     private readonly IApiKeyValidator _apiKeyValidator;
     private const string HeaderName = "X-Api-Key";
 
+    // Ctor
     public ApiKeyEndpointFilter(IApiKeyValidator apiKeyValidator)
     {
         _apiKeyValidator = apiKeyValidator;
     }
 
+    // Public Methods
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         var httpContext = context.HttpContext;
-
-        // Skip If Authenticated Via JWT Bearer
-        if (httpContext.User.Identity?.IsAuthenticated == true)
-        {
-            return await next(context);
-        }
 
         // Header Check
         if (!httpContext.Request.Headers.TryGetValue(HeaderName, out var extractedApiKey) ||

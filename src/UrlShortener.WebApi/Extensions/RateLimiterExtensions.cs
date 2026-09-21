@@ -1,7 +1,6 @@
 ﻿namespace UrlShortener.WebApi.Extensions;
 
 using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.RateLimiting;
 
 public static class RateLimiterExtensions
 {
