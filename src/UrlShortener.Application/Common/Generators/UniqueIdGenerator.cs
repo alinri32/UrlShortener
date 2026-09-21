@@ -4,30 +4,29 @@ using UrlShortener.Application.Common.Interfaces;
 
 public sealed class UniqueIdGenerator
 {
+    // Services
     private readonly IIdRangeAllocatorRepository _rangeAllocator;
     private readonly SemaphoreSlim _allocationLock = new(1, 1);
 
-    // Atomic State Trackers
     private long _currentId = 0;
     private long _maxId = 0;
-
-    // Fast Batch Size
     private const int BatchSize = 100000;
 
+    // Ctor
     public UniqueIdGenerator(IIdRangeAllocatorRepository rangeAllocator)
     {
         _rangeAllocator = rangeAllocator;
     }
 
-    // Get Next Atomic Unique Id
+    // Public Method
     public async ValueTask<long> NextIdAsync(CancellationToken cancellationToken = default)
     {
         while (true)
         {
+            // Fast Path
             long current = Interlocked.Read(ref _currentId);
             long max = Interlocked.Read(ref _maxId);
 
-            // Fast Path: In-Memory Atomic Increment
             if (current < max)
             {
                 long nextId = Interlocked.Increment(ref _currentId);
@@ -37,11 +36,10 @@ public sealed class UniqueIdGenerator
                 }
             }
 
-            // Slow Path: Range Exhausted, Acquire Next Range
+            // Slow Path
             await _allocationLock.WaitAsync(cancellationToken);
             try
             {
-                // Double-Check Locking
                 if (Interlocked.Read(ref _currentId) >= Interlocked.Read(ref _maxId))
                 {
                     // DB Fetch

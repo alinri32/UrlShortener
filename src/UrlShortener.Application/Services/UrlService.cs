@@ -9,14 +9,15 @@ using UrlShortener.Domain.Entities;
 
 public sealed class UrlService : IUrlService
 {
+    // Services
     private readonly IUrlRepository _urlRepository;
     private readonly ICacheService _cacheService;
     private readonly UniqueIdGenerator _idGenerator;
     private readonly IValidator<ShortenUrlRequestDto> _validator;
-
-    // Cache TTL Settings
+    
     private static readonly TimeSpan DefaultTtl = TimeSpan.FromHours(24);
 
+    // Ctor
     public UrlService(
         IUrlRepository urlRepository,
         ICacheService cacheService,
@@ -41,8 +42,6 @@ public sealed class UrlService : IUrlService
 
         // Generate Unique Numeric ID
         long numericId = await _idGenerator.NextIdAsync(cancellationToken);
-
-        // Convert to Base62 Code
         string shortCode = Base62Converter.Encode(numericId);
 
         // Entity Mapping
@@ -57,25 +56,24 @@ public sealed class UrlService : IUrlService
             IsActive = true
         };
 
-        // DB Persist
         await _urlRepository.CreateAsync(shortenedUrl, cancellationToken);
 
-        // Cache Population
+        // Cache 
         TimeSpan ttl = request.ExpiresAt.HasValue
             ? (request.ExpiresAt.Value - DateTime.UtcNow)
             : DefaultTtl;
 
         await _cacheService.SetUrlAsync(shortCode, request.OriginalUrl, ttl, cancellationToken);
 
-        // Result Response
+        // Result 
         string fullShortUrl = $"{baseUrl.TrimEnd('/')}/{shortCode}";
         return new ShortenUrlResponseDto(shortCode, fullShortUrl, request.ExpiresAt);
     }
 
-    // Query: Resolve Short URL (Protected with Single-Flight)
+    // Query: Resolve Short URL
     public async Task<string?> GetAsync(string shortCode, CancellationToken cancellationToken = default)
     {
-        // Cache Lookup with Single-Flight Fallback to DB
+        // Cache 
         return await _cacheService.GetOrSetUrlAsync(
             shortCode,
             async () =>
